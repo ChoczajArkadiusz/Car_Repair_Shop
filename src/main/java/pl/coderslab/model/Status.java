@@ -1,4 +1,4 @@
-package pl.coderslab;
+package pl.coderslab.Model;
 
 public class Status {
     private static String currentStatus;
