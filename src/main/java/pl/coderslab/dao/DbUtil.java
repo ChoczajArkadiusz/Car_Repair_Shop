@@ -1,4 +1,4 @@
-package pl.coderslab;
+package pl.coderslab.dao;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;

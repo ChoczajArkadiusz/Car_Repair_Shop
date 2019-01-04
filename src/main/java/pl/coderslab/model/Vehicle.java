@@ -1,9 +1,9 @@
-package pl.coderslab.Model;
+package pl.coderslab.model;
 
 import java.sql.Date;
 
 public class Vehicle {
-    private Integer id;
+    private Long id;
     private String manufacturer;
     private String model;
     private Integer yearOfProduction;
@@ -23,11 +23,11 @@ public class Vehicle {
     }
 
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    private void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

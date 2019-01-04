@@ -1,9 +1,9 @@
-package pl.coderslab.Model;
+package pl.coderslab.model;
 
 import java.sql.Date;
 
 public class Customer {
-    private Integer id;
+    private Long id;
     private String firstName;
     private String lastName;
     private Date birthDate;
@@ -26,11 +26,11 @@ public class Customer {
     }
 
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    private void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

@@ -1,17 +1,17 @@
-package pl.coderslab.Model;
+package pl.coderslab.model;
 
-import java.util.Date;
+import java.sql.Date;
 
 public class Order {
-    private Integer id;
+    private Long id;
     private Date acceptanceDate;
     private Date scheduledStartDate;
     private Date startDate;
-    private Integer employeeId;
+    private Long employeeId;
     private String problemDescription;
     private String repairDescription;
     private String status;
-    private Integer vehicleId;
+    private Long vehicleId;
     private Double manHours;
     private Double manHourCost;
     private Double partsCost;
@@ -28,11 +28,11 @@ public class Order {
     }
 
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    private void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -60,11 +60,11 @@ public class Order {
         this.startDate = startDate;
     }
 
-    public Integer getEmployeeId() {
+    public Long getEmployeeId() {
         return employeeId;
     }
 
-    public void setEmployeeId(Integer employeeId) {
+    public void setEmployeeId(Long employeeId) {
         this.employeeId = employeeId;
     }
 
@@ -92,11 +92,11 @@ public class Order {
         this.status = status;
     }
 
-    public Integer getVehicleId() {
+    public Long getVehicleId() {
         return vehicleId;
     }
 
-    public void setVehicleId(Integer vehicleId) {
+    public void setVehicleId(Long vehicleId) {
         this.vehicleId = vehicleId;
     }
 
