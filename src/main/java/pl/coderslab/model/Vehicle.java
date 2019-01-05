@@ -3,7 +3,7 @@ package pl.coderslab.model;
 import java.sql.Date;
 
 public class Vehicle {
-    private Long id;
+    private long id;
     private String manufacturer;
     private String model;
     private Integer yearOfProduction;
@@ -23,11 +23,11 @@ public class Vehicle {
     }
 
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 

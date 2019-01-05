@@ -3,15 +3,15 @@ package pl.coderslab.model;
 import java.sql.Date;
 
 public class Order {
-    private Long id;
+    private long id;
     private Date acceptanceDate;
     private Date scheduledStartDate;
     private Date startDate;
-    private Long employeeId;
+    private long employeeId;
     private String problemDescription;
     private String repairDescription;
     private String status;
-    private Long vehicleId;
+    private long vehicleId;
     private Double manHours;
     private Double manHourCost;
     private Double partsCost;
@@ -28,11 +28,11 @@ public class Order {
     }
 
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -60,11 +60,11 @@ public class Order {
         this.startDate = startDate;
     }
 
-    public Long getEmployeeId() {
+    public long getEmployeeId() {
         return employeeId;
     }
 
-    public void setEmployeeId(Long employeeId) {
+    public void setEmployeeId(long employeeId) {
         this.employeeId = employeeId;
     }
 
@@ -92,11 +92,11 @@ public class Order {
         this.status = status;
     }
 
-    public Long getVehicleId() {
+    public long getVehicleId() {
         return vehicleId;
     }
 
-    public void setVehicleId(Long vehicleId) {
+    public void setVehicleId(long vehicleId) {
         this.vehicleId = vehicleId;
     }
 

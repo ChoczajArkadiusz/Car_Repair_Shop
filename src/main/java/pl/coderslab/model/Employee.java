@@ -1,7 +1,7 @@
 package pl.coderslab.model;
 
 public class Employee {
-    private Long id;
+    private long id;
     private String firstName;
     private String lastName;
     private String address;
@@ -23,11 +23,11 @@ public class Employee {
     }
 
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
