@@ -14,8 +14,8 @@ public class OrderDao {
             " status, vehicle_id, man_hours, man_hour_cost, parts_cost, cost_for_customer) " +
             "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String sqlUpdate = "UPDATE orders SET " +
-            "acceptance_date=?, scheduled_start_date=?, start_date=?, employee_id=?, problem_desc=?, repair_desc=?" +
-            "status=?, vehicle_id=?, man_hours=?, man_hour_cost=?, parts_cost=?, cost_for_customer=? WHERE id=?";
+            "acceptance_date=?, scheduled_start_date=?, start_date=?, employee_id=?, problem_desc=?, repair_desc=?," +
+            " status=?, vehicle_id=?, man_hours=?, man_hour_cost=?, parts_cost=?, cost_for_customer=? WHERE id=?";
     private static final String sqlLoadAll = "SELECT * FROM orders";
     private static final String sqlLoadById = "SELECT * FROM orders WHERE id=?";
     private static final String sqlDelete = "DELETE FROM orders WHERE id=?";
@@ -63,13 +63,12 @@ public class OrderDao {
     }
 
 
-    public void delete(Order orders) throws SQLException {
+    public static void delete(long id) throws SQLException {
         Connection connection = DbUtil.getConn();
-        if (orders.getId() != 0) {
+        if (id != 0) {
             PreparedStatement preparedStatement = connection.prepareStatement(sqlDelete);
-            preparedStatement.setLong(1, orders.getId());
+            preparedStatement.setLong(1, id);
             preparedStatement.executeUpdate();
-            orders.setId(0L);
         }
     }
 
@@ -79,42 +78,43 @@ public class OrderDao {
         Connection connection = DbUtil.getConn();
         PreparedStatement preparedStatement = connection.prepareStatement(sqlLoadAll);
         ResultSet resultSet = preparedStatement.executeQuery();
-        do {
-            orders.add(extractObject(resultSet));
+        if (resultSet.next()) {
+            do {
+                orders.add(extractObject(resultSet));
+            }
+            while (resultSet.next());
         }
-        while (!resultSet.isLast());
         Order[] arr = new Order[orders.size()];
         arr = orders.toArray(arr);
         return arr;
     }
 
 
-    public static Order loadById(int id) throws SQLException {
+    public static Order loadById(long id) throws SQLException {
         Connection connection = DbUtil.getConn();
         PreparedStatement preparedStatement = connection.prepareStatement(sqlLoadById);
-        preparedStatement.setInt(1, id);
+        preparedStatement.setLong(1, id);
         ResultSet resultSet = preparedStatement.executeQuery();
+        resultSet.next();
         return extractObject(resultSet);
     }
 
 
     private static Order extractObject(ResultSet resultSet) throws SQLException {
         Order extractedObject = new Order();
-        if (resultSet.next()) {
-            extractedObject.setId(resultSet.getLong("id"));
-            extractedObject.setAcceptanceDate(resultSet.getDate("acceptance_date"));
-            extractedObject.setScheduledStartDate(resultSet.getDate("scheduled_start_date"));
-            extractedObject.setStartDate(resultSet.getDate("start_date"));
-            extractedObject.setEmployeeId(resultSet.getLong("employee_id"));
-            extractedObject.setProblemDescription(resultSet.getString("problem_desc"));
-            extractedObject.setRepairDescription(resultSet.getString("repair_desc"));
-            extractedObject.setRepairDescription(resultSet.getString("status"));
-            extractedObject.setVehicleId(resultSet.getLong("vehicle_id"));
-            extractedObject.setManHours(resultSet.getDouble("man_hours"));
-            extractedObject.setManHourCost(resultSet.getDouble("man_hour_cost"));
-            extractedObject.setPartsCost(resultSet.getDouble("parts_cost"));
-            extractedObject.setCostForCustomer(resultSet.getDouble("cost_for_customer"));
-        }
+        extractedObject.setId(resultSet.getLong("id"));
+        extractedObject.setAcceptanceDate(resultSet.getDate("acceptance_date"));
+        extractedObject.setScheduledStartDate(resultSet.getDate("scheduled_start_date"));
+        extractedObject.setStartDate(resultSet.getDate("start_date"));
+        extractedObject.setEmployeeId(resultSet.getLong("employee_id"));
+        extractedObject.setProblemDescription(resultSet.getString("problem_desc"));
+        extractedObject.setRepairDescription(resultSet.getString("repair_desc"));
+        extractedObject.setStatus(resultSet.getString("status"));
+        extractedObject.setVehicleId(resultSet.getLong("vehicle_id"));
+        extractedObject.setManHours(resultSet.getDouble("man_hours"));
+        extractedObject.setManHourCost(resultSet.getDouble("man_hour_cost"));
+        extractedObject.setPartsCost(resultSet.getDouble("parts_cost"));
+        extractedObject.setCostForCustomer(resultSet.getDouble("cost_for_customer"));
         return extractedObject;
     }
 

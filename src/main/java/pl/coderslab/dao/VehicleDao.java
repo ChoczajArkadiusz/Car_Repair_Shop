@@ -44,13 +44,12 @@ public class VehicleDao {
     }
 
 
-    public void delete(Vehicle vehicle) throws SQLException {
+    public static void delete(long id) throws SQLException {
         Connection connection = DbUtil.getConn();
-        if (vehicle.getId() != 0) {
+        if (id != 0) {
             PreparedStatement preparedStatement = connection.prepareStatement(sqlDelete);
-            preparedStatement.setLong(1, vehicle.getId());
+            preparedStatement.setLong(1, id);
             preparedStatement.executeUpdate();
-            vehicle.setId(0L);
         }
     }
 
@@ -60,35 +59,36 @@ public class VehicleDao {
         Connection connection = DbUtil.getConn();
         PreparedStatement preparedStatement = connection.prepareStatement(sqlLoadAll);
         ResultSet resultSet = preparedStatement.executeQuery();
-        do {
-            vehicles.add(extractObject(resultSet));
+        if (resultSet.next()) {
+            do {
+                vehicles.add(extractObject(resultSet));
+            }
+            while (resultSet.next());
         }
-        while (!resultSet.isLast());
         Vehicle[] arr = new Vehicle[vehicles.size()];
         arr = vehicles.toArray(arr);
         return arr;
     }
 
 
-    public static Vehicle loadById(int id) throws SQLException {
+    public static Vehicle loadById(long id) throws SQLException {
         Connection connection = DbUtil.getConn();
         PreparedStatement preparedStatement = connection.prepareStatement(sqlLoadById);
-        preparedStatement.setInt(1, id);
+        preparedStatement.setLong(1, id);
         ResultSet resultSet = preparedStatement.executeQuery();
+        resultSet.next();
         return extractObject(resultSet);
     }
 
 
     private static Vehicle extractObject(ResultSet resultSet) throws SQLException {
         Vehicle extractedObject = new Vehicle();
-        if (resultSet.next()) {
-            extractedObject.setId(resultSet.getLong("id"));
-            extractedObject.setManufacturer(resultSet.getString("manufacturer"));
-            extractedObject.setModel(resultSet.getString("model"));
-            extractedObject.setYearOfProduction(resultSet.getInt("year_of_production"));
-            extractedObject.setPlateNumber(resultSet.getString("plate_number"));
-            extractedObject.setNextReviewDate(resultSet.getDate("next_review_date"));
-        }
+        extractedObject.setId(resultSet.getLong("id"));
+        extractedObject.setManufacturer(resultSet.getString("manufacturer"));
+        extractedObject.setModel(resultSet.getString("model"));
+        extractedObject.setYearOfProduction(resultSet.getInt("year_of_production"));
+        extractedObject.setPlateNumber(resultSet.getString("plate_number"));
+        extractedObject.setNextReviewDate(resultSet.getDate("next_review_date"));
         return extractedObject;
     }
 

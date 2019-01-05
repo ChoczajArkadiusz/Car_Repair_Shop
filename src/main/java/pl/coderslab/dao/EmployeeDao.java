@@ -46,13 +46,12 @@ public class EmployeeDao {
     }
 
 
-    public void delete(Employee employee) throws SQLException {
+    public static void delete(long id) throws SQLException {
         Connection connection = DbUtil.getConn();
-        if (employee.getId() != 0) {
+        if (id != 0) {
             PreparedStatement preparedStatement = connection.prepareStatement(sqlDelete);
-            preparedStatement.setLong(1, employee.getId());
+            preparedStatement.setLong(1, id);
             preparedStatement.executeUpdate();
-            employee.setId(0L);
         }
     }
 
@@ -62,36 +61,37 @@ public class EmployeeDao {
         Connection connection = DbUtil.getConn();
         PreparedStatement preparedStatement = connection.prepareStatement(sqlLoadAll);
         ResultSet resultSet = preparedStatement.executeQuery();
-        do {
-            employees.add(extractObject(resultSet));
+        if (resultSet.next()) {
+            do {
+                employees.add(extractObject(resultSet));
+            }
+            while (resultSet.next());
         }
-        while (!resultSet.isLast());
         Employee[] arr = new Employee[employees.size()];
         arr = employees.toArray(arr);
         return arr;
     }
 
 
-    public static Employee loadById(int id) throws SQLException {
+    public static Employee loadById(long id) throws SQLException {
         Connection connection = DbUtil.getConn();
         PreparedStatement preparedStatement = connection.prepareStatement(sqlLoadById);
-        preparedStatement.setInt(1, id);
+        preparedStatement.setLong(1, id);
         ResultSet resultSet = preparedStatement.executeQuery();
+        resultSet.next();
         return extractObject(resultSet);
     }
 
 
     private static Employee extractObject(ResultSet resultSet) throws SQLException {
         Employee extractedObject = new Employee();
-        if (resultSet.next()) {
-            extractedObject.setId(resultSet.getLong("id"));
-            extractedObject.setFirstName(resultSet.getString("first_name"));
-            extractedObject.setLastName(resultSet.getString("last_name"));
-            extractedObject.setAddress(resultSet.getString("address"));
-            extractedObject.setPhone(resultSet.getString("phone"));
-            extractedObject.setNote(resultSet.getString("note"));
-            extractedObject.setManHourCost(resultSet.getDouble("man_hour_cost"));
-        }
+        extractedObject.setId(resultSet.getLong("id"));
+        extractedObject.setFirstName(resultSet.getString("first_name"));
+        extractedObject.setLastName(resultSet.getString("last_name"));
+        extractedObject.setAddress(resultSet.getString("address"));
+        extractedObject.setPhone(resultSet.getString("phone"));
+        extractedObject.setNote(resultSet.getString("note"));
+        extractedObject.setManHourCost(resultSet.getDouble("man_hour_cost"));
         return extractedObject;
     }
 

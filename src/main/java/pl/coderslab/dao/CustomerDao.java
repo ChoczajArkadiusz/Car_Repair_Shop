@@ -41,13 +41,12 @@ public class CustomerDao {
     }
 
 
-    public void delete(Customer customer) throws SQLException {
+    public static void delete(long id) throws SQLException {
         Connection connection = DbUtil.getConn();
-        if (customer.getId() != 0) {
+        if (id != 0) {
             PreparedStatement preparedStatement = connection.prepareStatement(sqlDelete);
-            preparedStatement.setLong(1, customer.getId());
+            preparedStatement.setLong(1, id);
             preparedStatement.executeUpdate();
-            customer.setId(0L);
         }
     }
 
@@ -57,33 +56,34 @@ public class CustomerDao {
         Connection connection = DbUtil.getConn();
         PreparedStatement preparedStatement = connection.prepareStatement(sqlLoadAll);
         ResultSet resultSet = preparedStatement.executeQuery();
-        do {
-            customers.add(extractObject(resultSet));
+        if (resultSet.next()) {
+            do {
+                customers.add(extractObject(resultSet));
+            }
+            while (resultSet.next());
         }
-        while (!resultSet.isLast());
         Customer[] arr = new Customer[customers.size()];
         arr = customers.toArray(arr);
         return arr;
     }
 
 
-    public static Customer loadById(int id) throws SQLException {
+    public static Customer loadById(long id) throws SQLException {
         Connection connection = DbUtil.getConn();
         PreparedStatement preparedStatement = connection.prepareStatement(sqlLoadById);
-        preparedStatement.setInt(1, id);
+        preparedStatement.setLong(1, id);
         ResultSet resultSet = preparedStatement.executeQuery();
+        resultSet.next();
         return extractObject(resultSet);
     }
 
 
     private static Customer extractObject(ResultSet resultSet) throws SQLException {
         Customer extractedObject = new Customer();
-        if (resultSet.next()) {
-            extractedObject.setId(resultSet.getLong("id"));
-            extractedObject.setFirstName(resultSet.getString("first_name"));
-            extractedObject.setLastName(resultSet.getString("last_name"));
-            extractedObject.setBirthDate(resultSet.getDate("birth_date"));
-        }
+        extractedObject.setId(resultSet.getLong("id"));
+        extractedObject.setFirstName(resultSet.getString("first_name"));
+        extractedObject.setLastName(resultSet.getString("last_name"));
+        extractedObject.setBirthDate(resultSet.getDate("birth_date"));
         return extractedObject;
     }
 
