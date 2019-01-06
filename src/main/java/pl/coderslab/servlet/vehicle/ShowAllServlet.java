@@ -23,6 +23,7 @@ public class ShowAllServlet extends HttpServlet {
 
         try {
 //            DbInit.createTableVehicles();
+//            DbInit.createTableCustomersVehicles();
             Vehicle[] vehicles = VehicleDao.loadAll();
             request.setAttribute("vehicles", vehicles);
             getServletContext().getRequestDispatcher("/vehicles/show_all.jsp").forward(request, response);
