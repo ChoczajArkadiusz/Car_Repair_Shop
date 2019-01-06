@@ -13,11 +13,11 @@
 <body>
 <%@include file="../header.jsp" %>
 
-<h2 class="text-center"> Klienci </h2>
+<h2 class="text-center"> Przypisywanie pojazdu do klienta ${customer.firstName} ${customer.lastName} </h2>
 
 <div class="container">
     <h3>Lista wpisów w bazie danych:</h3>
-    <c:if test="${not empty customers}">
+    <c:if test="${not empty vehicles}">
         <p>Wyszukaj w tabeli:</p>
         <input class="form-control" id="searchPhrase" type="text" placeholder="szukana fraza..">
         <br>
@@ -25,27 +25,36 @@
             <thead>
             <tr>
                 <th> ID</th>
-                <th> Imię</th>
-                <th> Nazwisko</th>
-                <th> Szczegóły</th>
+                <th> Marka</th>
+                <th> Model</th>
+                <th> Rok produkcji</th>
+                <th> Numer rejestracyjny</th>
+                <th> Przypisanie</th>
             </tr>
             </thead>
-            <tbody id="customersTab">
-            <c:forEach items="${customers}" var="customer">
+            <tbody id="vehiclesTab">
+            <c:forEach items="${vehicles}" var="vehicle">
                 <tr>
-                    <td>${customer.id}</td>
-                    <td>${customer.firstName}</td>
-                    <td>${customer.lastName}</td>
+                    <td>${vehicle.id}</td>
+                    <td>${vehicle.manufacturer}</td>
+                    <td>${vehicle.model}</td>
+                    <td>${vehicle.yearOfProduction}</td>
+                    <td>${vehicle.plateNumber}</td>
                     <td>
-                        <a href="/null/customers/details?customerId=${customer.id}" class="btn btn-info btn-block btn-sm"
-                           role="button">Szczegóły</a>
+                        <form class="form" action="/null/vehicles/assign_to_customer" method="post">
+                            <div class="form-group">
+                                <input type="hidden" name="vehicleId" id="vehicleId" value="${vehicle.id}">
+                                <input type="hidden" name="customerId" id="customerId" value="${customer.id}">
+                                <button type="submit" class="btn btn-warning center-block">Przypisz</button>
+                            </div>
+                        </form>
                     </td>
                 </tr>
             </c:forEach>
             </tbody>
         </table>
     </c:if>
-    <c:if test="${empty customers}">
+    <c:if test="${empty vehicles}">
         <h4>brak wpisów</h4>
     </c:if>
 </div>
@@ -54,7 +63,7 @@
     $(document).ready(function () {
         $("#searchPhrase").on("keyup", function () {
             var value = $(this).val().toLowerCase();
-            $("#customersTab tr").filter(function () {
+            $("#vehiclesTab tr").filter(function () {
                 $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
             });
         });

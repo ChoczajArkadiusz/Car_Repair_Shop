@@ -19,10 +19,66 @@
 </head>
 <body>
 <%@include file="header.jsp" %>
-<br>
-<br>
 <h1 class="text-center">Warsztat samochodowy</h1>
-<h2 class="text-center">Strona główna</h2>
+<h3 class="text-center">Aktualnie prowadzone naprawy</h3>
+
+<div class="container">
+    <h3>Lista wpisów w bazie danych:</h3>
+    <c:if test="${not empty ordersInfos}">
+        <p>Wyszukaj w tabeli:</p>
+        <input class="form-control" id="searchPhrase" type="text" placeholder="szukana fraza..">
+        <br>
+        <table class="table table-bordered table-striped">
+            <thead>
+            <tr>
+                <th> Pracownik</th>
+                <th> Data rozp. naprawy</th>
+                <th> Pojazd</th>
+                <th> Opis problemu</th>
+                <th> Roboczogodziny</th>
+                <th> Szczegóły</th>
+            </tr>
+            </thead>
+            <tbody id="ordersTab">
+            <c:forEach items="${ordersInfos}" var="orderInfo">
+                <tr>
+                    <td>${orderInfo.employee.firstName} ${orderInfo.employee.lastName}</td>
+                    <td>${orderInfo.order.startDate}</td>
+                    <td>${orderInfo.vehicle.manufacturer} ${orderInfo.vehicle.model}</td>
+                    <td>${orderInfo.order.problemDescription}</td>
+                    <td>${orderInfo.order.manHours}</td>
+                    <td>
+                        <a href="/null/orders/edit?orderId=${orderInfo.order.id}" class="btn btn-info btn-block btn-sm"
+                           role="button">Szczegóły zlecenia</a>
+                    </td>
+                </tr>
+            </c:forEach>
+            </tbody>
+        </table>
+    </c:if>
+    <c:if test="${empty ordersInfos}">
+        <h4>brak wpisów</h4>
+        <br>
+        <br>
+        <a href="/null/orders_info"> odśwież </a>
+
+    </c:if>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        $("#searchPhrase").on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+            $("#ordersTab tr").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+</script>
+
+
+
 
 </body>
 </html>
