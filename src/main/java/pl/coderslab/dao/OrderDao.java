@@ -17,6 +17,7 @@ public class OrderDao {
             "acceptance_date=?, scheduled_start_date=?, start_date=?, employee_id=?, problem_desc=?, repair_desc=?," +
             " status=?, vehicle_id=?, man_hours=?, man_hour_cost=?, parts_cost=?, cost_for_customer=? WHERE id=?";
     private static final String sqlLoadAll = "SELECT * FROM orders";
+    private static final String sqlLoadAllInRepair = "SELECT * FROM orders WHERE status=\"In Repair\" ORDER BY employee_id";
     private static final String sqlLoadById = "SELECT * FROM orders WHERE id=?";
     private static final String sqlDelete = "DELETE FROM orders WHERE id=?";
 
@@ -74,9 +75,19 @@ public class OrderDao {
 
 
     public static Order[] loadAll() throws SQLException {
+        return loadMultiple(sqlLoadAll);
+    }
+
+
+    public static Order[] loadAllInRepair() throws SQLException {
+        return loadMultiple(sqlLoadAllInRepair);
+    }
+
+
+    public static Order[] loadMultiple(String sqlQuery) throws SQLException {
         ArrayList<Order> orders = new ArrayList<>();
         Connection connection = DbUtil.getConn();
-        PreparedStatement preparedStatement = connection.prepareStatement(sqlLoadAll);
+        PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery);
         ResultSet resultSet = preparedStatement.executeQuery();
         if (resultSet.next()) {
             do {

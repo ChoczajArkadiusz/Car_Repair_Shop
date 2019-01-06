@@ -59,6 +59,17 @@ public class DbInit {
             "FOREIGN KEY (vehicle_id) REFERENCES vehicles(id) ON DELETE CASCADE " +
             ")";
 
+    public static String sqlCustomersVehicles = "CREATE TABLE IF NOT EXISTS customers_vehicles" +
+            "(" +
+            "id BIGINT AUTO_INCREMENT," +
+            "customer_id BIGINT," +
+            "vehicle_id BIGINT," +
+            "PRIMARY KEY (id), " +
+            "FOREIGN KEY (customer_id) REFERENCES customers(id) ON DELETE CASCADE, " +
+            "FOREIGN KEY (vehicle_id) REFERENCES vehicles(id) ON DELETE CASCADE " +
+            ")";
+
+
 
     public static void createTableCustomers() {
         PreparedStatement preparedStatement = null;
@@ -107,5 +118,16 @@ public class DbInit {
         }
     }
 
+
+    public static void createTableCustomersVehicles() {
+        PreparedStatement preparedStatement = null;
+        try {
+            Connection connection = DbUtil.getConn();
+            preparedStatement = connection.prepareStatement(sqlCustomersVehicles);
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
 }
