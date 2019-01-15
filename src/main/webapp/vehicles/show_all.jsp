@@ -29,8 +29,7 @@
                 <th> Model</th>
                 <th> Rok produkcji</th>
                 <th> Numer rejestracyjny</th>
-                <th> Data nast. przeglądu</th>
-                <th> Edycja</th>
+                <th> Szczegóły</th>
             </tr>
             </thead>
             <tbody id="vehiclesTab">
@@ -41,10 +40,9 @@
                     <td>${vehicle.model}</td>
                     <td>${vehicle.yearOfProduction}</td>
                     <td>${vehicle.plateNumber}</td>
-                    <td>${vehicle.nextReviewDate}</td>
                     <td>
-                        <a href="/null/vehicles/edit?vehicleId=${vehicle.id}" class="btn btn-info btn-block btn-sm"
-                           role="button">Edytuj</a>
+                        <a href="/null/vehicles/details?vehicleId=${vehicle.id}" class="btn btn-info btn-block btn-sm"
+                           role="button">Szczegóły</a>
                     </td>
                 </tr>
             </c:forEach>
