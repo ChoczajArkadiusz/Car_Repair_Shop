@@ -91,7 +91,7 @@
             <hr>
 
 
-            <form class="form" action="/null/vehicles/assign_to_customer" method="get">
+            <form class="form" action="/null/customers_vehicles/assign_to_customer" method="get">
                 <div class="form-group">
                     <button type="submit" class="btn btn-info center-block">Przypisz nowy pojazd z bazy danych</button>
                 </div>
